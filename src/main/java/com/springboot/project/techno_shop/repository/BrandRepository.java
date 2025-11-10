@@ -2,10 +2,11 @@ package com.springboot.project.techno_shop.repository;
 
 import com.springboot.project.techno_shop.entity.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface BrandRepository extends JpaRepository<Brand, Long> {
+public interface BrandRepository extends JpaRepository<Brand, Long>, JpaSpecificationExecutor<Brand> {
 
     List<Brand> findByNameContaining(String name);
 

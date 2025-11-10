@@ -1,9 +1,9 @@
-package com.springboot.project.techno_shop.dto;
+package com.springboot.project.techno_shop.spec;
 
 import lombok.Data;
 
 @Data
-public class BrandDTO {
+public class BrandFilter {
     private Long id;
     private String name;
 }
