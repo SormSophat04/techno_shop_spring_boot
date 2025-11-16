@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002_insert_model_tbl
+      author: techno@gamil.com
+      changes:
+        - loadData:
+            tableName: brand_tbl
+            columns:
+              - column:
+                  name: id
+                  type: NUMBER
+              - column:
+                  name: brand_name
+                  type: varchar
+            file: db/changelog/data/002_insert_brand_tbl.csv
+
