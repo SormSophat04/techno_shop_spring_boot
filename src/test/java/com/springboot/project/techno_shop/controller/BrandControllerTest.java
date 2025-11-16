@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.project.techno_shop.dto.BrandDTO;
 import com.springboot.project.techno_shop.entity.Brand;
 import com.springboot.project.techno_shop.mapper.BrandMapper;
+import com.springboot.project.techno_shop.mapper.ModelMapper;
 import com.springboot.project.techno_shop.service.BrandService;
+import com.springboot.project.techno_shop.service.ModelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,12 @@ public class BrandControllerTest {
 
     @MockBean
     private BrandMapper brandMapper;
+
+    @MockBean
+    private ModelService modelService;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Autowired
     private ObjectMapper objectMapper;

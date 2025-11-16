@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_init_db_schema
+      author: techno@gamil.com
+      changes:
+        - createTable:
+            tableName: brand_tbl
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: bigint
+              - column:
+                  name: brand_name
+                  type: varchar(255)
+        - createTable:
+            tableName: model_tbl
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  name: id
+                  type: bigint
+              - column:
+                  name: model_name
+                  type: varchar(255)
+              - column:
+                  name: brandId
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_models_brands
+                    references: brand_tbl(id)
