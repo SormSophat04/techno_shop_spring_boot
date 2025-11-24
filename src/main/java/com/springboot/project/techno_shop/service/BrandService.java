@@ -8,8 +8,10 @@ import java.util.Map;
 
 public interface BrandService {
     Brand create(Brand brand);
-    Brand getById(Long id);
+    Brand getById(Long brandId);
     Brand update(Long id, Brand updateBrand);
 //    List<Brand> getBrands(Map<String, String> params);
     Page<Brand> getBrands(Map<String, String> params);
+
+    void destroy(Long id);
 }

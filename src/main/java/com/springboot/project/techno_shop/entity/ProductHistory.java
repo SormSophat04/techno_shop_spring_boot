@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,14 +18,11 @@ public class ProductHistory {
     @Column(name = "import_unit")
     private Integer importUnit;
 
-    @Column(name = "date_import")
-    private LocalDate dateImport;
-
-    @Column(name = "export_unit")
-    private Integer exportUnit;
-
     @Column(name = "unit_price")
     private BigDecimal unitPrice;
+
+    @Column(name = "date_import")
+    private LocalDateTime dateImport;
 
     @ManyToOne
     @JoinColumn(name = "productId")

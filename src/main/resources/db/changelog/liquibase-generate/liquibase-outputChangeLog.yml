@@ -1,0 +1,74 @@
+databaseChangeLog:
+- changeSet:
+    id: 1763223631361-1
+    author: sophat (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: brand_tbl_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: brand_name
+            type: VARCHAR(255)
+        tableName: brand_tbl
+- changeSet:
+    id: 1763223631361-2
+    author: sophat (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: model_tbl_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: model_name
+            type: VARCHAR(255)
+        - column:
+            name: brandId
+            type: BIGINT
+        - column:
+            name: brand_id
+            type: BIGINT
+        tableName: model_tbl
+- changeSet:
+    id: 1763223631361-3
+    author: sophat (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: brandId
+        baseTableName: model_tbl
+        constraintName: fk_models_brands
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: brand_tbl
+        validate: true
+- changeSet:
+    id: 1763223631361-4
+    author: sophat (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: brand_id
+        baseTableName: model_tbl
+        constraintName: fklc11lvyikmkqm1rcr3f4kefxa
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: brand_tbl
+        validate: true
+

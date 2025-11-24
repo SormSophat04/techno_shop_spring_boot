@@ -45,7 +45,6 @@ public class BrandController {
     @GetMapping()
     public ResponseEntity<?> getBrands(@RequestParam Map<String, String> params){
         Page<Brand> pages = brandService.getBrands(params);
-
         return ResponseEntity.ok(pages.getContent());
     }
 
@@ -58,9 +57,16 @@ public class BrandController {
     }
 
     @GetMapping("{id}/models")
-    public ResponseEntity<?> getModelByBrand(@PathVariable("id") Long brandId ){
-        List<Model> brands = modelService.getByBrand(brandId);
-        List<ModelDTO> list = brands.stream().map(modelMapper::toModelDTO).toList();
+    public ResponseEntity<?> getModelByBrand(@PathVariable("id") Long brandId){
+        Brand brand = brandService.getById(brandId);
+        List<Model> models = modelService.getByBrand(brand.getId());
+        List<ModelDTO> list = models.stream().map(modelMapper::toModelDTO).toList();
         return ResponseEntity.ok(list);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteBrand(@PathVariable("id") Long id){
+        brandService.destroy(id);
+        return ResponseEntity.ok("Delete successfully");
     }
 }

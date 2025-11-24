@@ -1,6 +1,7 @@
 package com.springboot.project.techno_shop.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class Product {
     @Column(name = "available_unit")
     private Integer availableUnit;
 
+    @DecimalMin(value = "0.001", message = "Price must be greater than 0")
     @Column(name = "price")
     private BigDecimal price;
 
