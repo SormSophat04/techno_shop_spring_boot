@@ -1,7 +1,6 @@
 package com.springboot.project.techno_shop.impl;
 
 import com.springboot.project.techno_shop.entity.Brand;
-import com.springboot.project.techno_shop.exception.ApiException;
 import com.springboot.project.techno_shop.exception.NotFoundException;
 import com.springboot.project.techno_shop.repository.BrandRepository;
 import com.springboot.project.techno_shop.service.BrandService;
@@ -9,17 +8,11 @@ import com.springboot.project.techno_shop.spec.BrandFilter;
 import com.springboot.project.techno_shop.spec.BrandSpec;
 import com.springboot.project.techno_shop.util.PageUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.net.http.HttpConnectTimeoutException;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -93,9 +86,11 @@ public class BrandServiceImpl implements BrandService {
         return page;
     }
 
-
-
-
+    @Override
+    public void destroy(Long id) {
+        Brand brandDelete = getById(id);
+        brandRepository.delete(brandDelete);
+    }
 
 
 //    @Override
