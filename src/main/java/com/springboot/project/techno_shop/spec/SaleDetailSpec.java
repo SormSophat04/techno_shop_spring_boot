@@ -20,11 +20,17 @@ public class SaleDetailSpec implements Specification<SaleDetail> {
         List<Predicate> predicates = new ArrayList<>();
         Join<SaleDetail, Sale> sale = saleDetail.join("sale");
 
-        if (Objects.nonNull(saleDetailFilter.getStartDate())){
-            cb.greaterThanOrEqualTo(sale.get("saleDate"), saleDetailFilter.getStartDate());
+        if (Objects.nonNull(saleDetailFilter.getStartDate()) && Objects.nonNull(saleDetailFilter.getEndDate())) {
+            Predicate datePredicate = cb.between(sale.get("saleDate"), saleDetailFilter.getStartDate(), saleDetailFilter.getEndDate());
+            predicates.add(datePredicate);
         }
-        if (Objects.nonNull(saleDetailFilter.getEndDate())){
-            cb.lessThanOrEqualTo(sale.get("saleDate"), saleDetailFilter.getEndDate());
+        else if (Objects.nonNull(saleDetailFilter.getStartDate())){
+            Predicate datePredicate = cb.greaterThanOrEqualTo(sale.get("saleDate"), saleDetailFilter.getStartDate());
+            predicates.add(datePredicate);
+        }
+        else if (Objects.nonNull(saleDetailFilter.getEndDate())){
+            Predicate datePredicate = cb.lessThanOrEqualTo(sale.get("saleDate"), saleDetailFilter.getEndDate());
+            predicates.add(datePredicate);
         }
 
         return cb.and(predicates.toArray(Predicate[]::new));
