@@ -24,7 +24,7 @@ public class SaleDetail {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "saleDateId")
+    @JoinColumn(name = "saleId")
     private Sale sale;
 
 }
