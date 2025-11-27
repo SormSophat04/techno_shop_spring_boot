@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -63,6 +64,7 @@ public class BrandControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testCreateBrand() throws Exception {
         when(brandService.create(any(Brand.class))).thenReturn(brand);
         when(brandMapper.toBrand(any(BrandDTO.class))).thenReturn(brand);
@@ -77,6 +79,7 @@ public class BrandControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetBrandById() throws Exception {
         when(brandService.getById(1L)).thenReturn(brand);
         when(brandMapper.toBrandDTO(any(Brand.class))).thenReturn(brandDTO);
@@ -88,6 +91,7 @@ public class BrandControllerTest {
     }
 
     @Test
+    @WithMockUser
     void testGetBrands() throws Exception {
         Map<String, String> params = new HashMap<>();
         Page<Brand> brandPage = new PageImpl<>(Collections.singletonList(brand));
@@ -100,6 +104,7 @@ public class BrandControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdateBrand() throws Exception {
         when(brandService.update(any(Long.class), any(Brand.class))).thenReturn(brand);
         when(brandMapper.toBrand(any(BrandDTO.class))).thenReturn(brand);

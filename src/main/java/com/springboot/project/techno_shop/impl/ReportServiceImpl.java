@@ -1,13 +1,18 @@
 package com.springboot.project.techno_shop.impl;
 
+import com.springboot.project.techno_shop.dto.ExpenseReportDTO;
 import com.springboot.project.techno_shop.dto.ProductReportDTO;
 import com.springboot.project.techno_shop.entity.Product;
+import com.springboot.project.techno_shop.entity.ProductHistory;
 import com.springboot.project.techno_shop.entity.SaleDetail;
 import com.springboot.project.techno_shop.projection.ProductSold;
+import com.springboot.project.techno_shop.repository.ProductHistoryRepository;
 import com.springboot.project.techno_shop.repository.ProductRepository;
 import com.springboot.project.techno_shop.repository.SaleDetailRepository;
 import com.springboot.project.techno_shop.repository.SaleRepository;
 import com.springboot.project.techno_shop.service.ReportService;
+import com.springboot.project.techno_shop.spec.ProductHistoryFilter;
+import com.springboot.project.techno_shop.spec.ProductHistorySpec;
 import com.springboot.project.techno_shop.spec.SaleDetailFilter;
 import com.springboot.project.techno_shop.spec.SaleDetailSpec;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +24,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,6 +34,7 @@ public class ReportServiceImpl implements ReportService {
     private final SaleRepository saleRepository;
     private final SaleDetailRepository saleDetailRepository;
     private final ProductRepository productRepository;
+    private final ProductHistoryRepository productHistoryRepository;
     @Override
     public List<ProductSold> getProductSold(LocalDate startDate, LocalDate endDate) {
         return saleRepository.findProductSold(startDate, endDate);
@@ -67,4 +74,43 @@ public class ReportServiceImpl implements ReportService {
         }
         return list;
     }
+
+    @Override
+    public List<ExpenseReportDTO> getExpenseReport(LocalDate startDate, LocalDate endDate) {
+        ProductHistoryFilter productHistoryFilter = new ProductHistoryFilter();
+        productHistoryFilter.setStartDate(startDate);
+        productHistoryFilter.setEndDate(endDate);
+        ProductHistorySpec spec = new ProductHistorySpec(productHistoryFilter);
+        List<ProductHistory> productHistories = productHistoryRepository.findAll(spec);
+
+        Set<Long> productId = productHistories.stream().map(ph -> ph.getProduct().getId())
+                .collect(Collectors.toSet());
+        List<Product> products = productRepository.findAllById(productId);
+        Map<Long, Product> productMap = products.stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+
+        Map<Product, List<ProductHistory>> historyMap = productHistories.stream()
+                .collect(Collectors.groupingBy(ProductHistory::getProduct));
+
+        var expenseReportDTOs = new ArrayList<ExpenseReportDTO>();
+
+        for (var entry : historyMap.entrySet()){
+            Product key = productMap.get(entry.getKey().getId());
+            List<ProductHistory> importProduct = entry.getValue();
+
+            int totalUnit = importProduct.stream().mapToInt(ProductHistory::getImportUnit).sum();
+
+            double totalAmount = importProduct.stream()
+                    .mapToDouble(imp -> imp.getImportUnit() * imp.getUnitPrice().doubleValue()).sum();
+
+            var expenseReportDTO = new ExpenseReportDTO();
+            expenseReportDTO.setProductId(key.getId());
+            expenseReportDTO.setProductName(key.getName());
+            expenseReportDTO.setUnit(totalUnit);
+            expenseReportDTO.setTotalAmount(BigDecimal.valueOf(totalAmount));
+            expenseReportDTOs.add(expenseReportDTO);
+        }
+        return expenseReportDTOs;
+    }
+
+
 }
