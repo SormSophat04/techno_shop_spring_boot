@@ -8,4 +8,7 @@ import lombok.Data;
 public class BrandDTO {
     @NotNull(message = "Brand name is required")
     private String name;
+
+    public void setId(long l) {
+    }
 }

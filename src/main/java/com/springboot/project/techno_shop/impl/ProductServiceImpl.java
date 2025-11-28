@@ -47,6 +47,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductHistory> getProductHistoriesAll() {
+        return productHistoryRepository.findAll();
+    }
+
+
+    @Override
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product not found", id));
     }

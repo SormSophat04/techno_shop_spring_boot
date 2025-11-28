@@ -10,6 +10,7 @@ import com.springboot.project.techno_shop.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,13 @@ public class ProductController {
     public ResponseEntity<?> getAll(){
         List<Product> products = productService.getAll();
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/histories")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getProductHistory(){
+        List<ProductHistory> productHistories = productService.getProductHistoriesAll();
+        return ResponseEntity.ok(productHistories);
     }
 
     @GetMapping("{id}")
