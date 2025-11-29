@@ -4,11 +4,15 @@ import com.springboot.project.techno_shop.enums.Permission;
 import com.springboot.project.techno_shop.enums.Role;
 import com.springboot.project.techno_shop.jwt.JwtFilter;
 import com.springboot.project.techno_shop.jwt.LoginFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,14 +26,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig{
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -79,24 +82,36 @@ public class SecurityConfig{
         return http.build();
     }
 
-    @Bean
-    protected UserDetailsService userDetailsService(){
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin123"))
-                .authorities(Role.ADMIN.getGrantedAuthorities())
-                .build();
-        UserDetails sale = User.builder()
-                .username("sale")
-                .password(passwordEncoder.encode("sale123"))
-                .authorities(Role.SALE.getGrantedAuthorities())
-                .build();
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder.encode("user123"))
-                .authorities(Role.USER.getGrantedAuthorities())
-                .build();
+//    @Bean
+//    protected UserDetailsService userDetailsService(){
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder.encode("admin123"))
+//                .authorities(Role.ADMIN.getGrantedAuthorities())
+//                .build();
+//        UserDetails sale = User.builder()
+//                .username("sale")
+//                .password(passwordEncoder.encode("sale123"))
+//                .authorities(Role.SALE.getGrantedAuthorities())
+//                .build();
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password(passwordEncoder.encode("user123"))
+//                .authorities(Role.USER.getGrantedAuthorities())
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(admin, sale, user);
+//    }
 
-        return new InMemoryUserDetailsManager(admin, sale, user);
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(getAuthenticationProvider());
+//    }
+
+    @Bean
+    public AuthenticationProvider getAuthenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
     }
 }
