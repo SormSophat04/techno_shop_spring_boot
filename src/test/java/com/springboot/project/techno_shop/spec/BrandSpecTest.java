@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -58,4 +59,11 @@ public class BrandSpecTest {
 
         verify(idPath).in(1L);
     }
+
+//    @Test
+//    public void endCode(){
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        String s = bCryptPasswordEncoder.encode("vid123");
+//        System.out.println(s);
+//    }
 }
