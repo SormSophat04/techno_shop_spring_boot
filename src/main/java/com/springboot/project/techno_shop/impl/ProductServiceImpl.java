@@ -36,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(Product product) {
+        if (productRepository.findByModelIdAndColorId(product.getModel().getId(), product.getColor().getId()).isPresent()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Product with model id=%s and color id=%s already exists".formatted(product.getModel().getId(), product.getColor().getId()));
+        }
         String name = "%s %s".formatted(product.getModel().getName(),product.getColor().getName());
         product.setName(name);
         return productRepository.save(product);
