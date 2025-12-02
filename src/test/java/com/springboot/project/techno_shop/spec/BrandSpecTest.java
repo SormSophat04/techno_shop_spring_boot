@@ -60,10 +60,10 @@ public class BrandSpecTest {
         verify(idPath).in(1L);
     }
 
-//    @Test
-//    public void endCode(){
-//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//        String s = bCryptPasswordEncoder.encode("vid123");
-//        System.out.println(s);
-//    }
+    @Test
+    public void endCode(){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String s = bCryptPasswordEncoder.encode("123123");
+        System.out.println(s);
+    }
 }

@@ -2,19 +2,17 @@ package com.springboot.project.techno_shop.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import java.util.Set;
+
 @Entity
-@Table(name = "colors")
-public class Color extends AuditEntity{
-
+@Table(name = "permissions")
+@Data
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "color_name")
+    @Column(name = "permission_name")
     private String name;
-
 }

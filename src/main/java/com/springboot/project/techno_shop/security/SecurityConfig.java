@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -44,9 +45,15 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilter(new LoginFilter(authenticationManager))
-                .addFilterAfter(new JwtFilter(), LoginFilter.class)
+                .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/login",
+                                "/register"
+                        ).permitAll()
                         // Brand
                         .requestMatchers(HttpMethod.GET, "/brands/**").hasAuthority(Permission.BRAND_READ.getDescription())
                         .requestMatchers(HttpMethod.POST, "/brands").hasAuthority(Permission.BRAND_WRITE.getDescription())

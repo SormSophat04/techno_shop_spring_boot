@@ -2,15 +2,17 @@ package com.springboot.project.techno_shop.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "product_history_tbl")
-public class ProductHistory {
+@Table(name = "product_historys")
+public class ProductHistory extends AuditEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;

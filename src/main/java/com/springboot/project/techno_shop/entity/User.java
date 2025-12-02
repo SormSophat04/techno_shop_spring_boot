@@ -1,12 +1,13 @@
 package com.springboot.project.techno_shop.entity;
 
-import com.springboot.project.techno_shop.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Set;
+
 @Entity
 @Data
-@Table(name = "user_tbl")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,12 +16,11 @@ public class User {
     private  String lastName;
     private String username;
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 }
