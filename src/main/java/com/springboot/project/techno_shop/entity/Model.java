@@ -2,11 +2,13 @@ package com.springboot.project.techno_shop.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "model_tbl")
-public class Model {
+@Table(name = "models")
+public class Model extends AuditEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
