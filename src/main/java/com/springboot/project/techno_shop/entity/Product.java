@@ -3,13 +3,15 @@ package com.springboot.project.techno_shop.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "product_tbl", uniqueConstraints = @UniqueConstraint(columnNames = {"modelId", "colorId"}))
-public class Product {
+@Table(name = "products", uniqueConstraints = @UniqueConstraint(columnNames = {"modelId", "colorId"}))
+public class Product extends AuditEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
