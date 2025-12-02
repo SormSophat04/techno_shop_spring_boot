@@ -1,5 +1,6 @@
 package com.springboot.project.techno_shop.impl;
 
+import com.springboot.project.techno_shop.dto.UserDTO;
 import com.springboot.project.techno_shop.enums.Role;
 import com.springboot.project.techno_shop.security.AuthUser;
 import com.springboot.project.techno_shop.service.UserService;
@@ -21,5 +22,9 @@ public class UserServiceFakeImpl implements UserService {
                 new AuthUser(Role.SALE.getGrantedAuthorities(), passwordEncoder.encode("sale1234"), "sale1", true, true, true, true)
         );
         return users.stream().filter(user -> user.getUsername().equals(username)).findFirst();
+    }
+
+    @Override
+    public void createUser(UserDTO userDTO) {
     }
 }
